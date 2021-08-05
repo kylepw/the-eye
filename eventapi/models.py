@@ -13,6 +13,7 @@ class Event(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+        unique_together = ['session_id', 'category', 'name', 'data', 'timestamp']
 
     @property
     def type(self):
