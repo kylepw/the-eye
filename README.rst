@@ -21,24 +21,34 @@ Usage
 
 - Check specific event: ::
 
-    curl -L http://127.0.0.1:8000/events/1
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/3/
 
 - Send event: ::
 
-curl -X POST http://127.0.0.1:8000/events/   \
-     -H 'Content-Type: application/json' \
-     -d @- << EOF
-{
-    "session_id": "e2085be5-9137-4e4e-80b5-f1ffddc25423",
-    "category": "click",
-    "name": "pageview",
-    "data": {
-        "host": "www.consumeraffairs.com",
-        "path": "/"
-    },
-    "timestamp": "2021-01-01 09:15:29.243860"
-}
-EOF
+    curl -X POST http://127.0.0.1:8000/events/ \
+        -H 'Content-Type: application/json'    \
+        -d @- << EOF
+    {
+        "session_id": "e2085be5-9137-4e4e-80b5-f1ffddc25423",
+        "category": "click",
+        "name": "pageview",
+        "data": {
+            "host": "www.consumeraffairs.com",
+            "path": "/"
+        },
+        "timestamp": "2021-01-01 09:15:29.243860"
+    }
+    EOF
+
+- Query a session, category, or time range: ::
+
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/?session_id=e2085be5-9137-4e4e-80b5-f1ffddc25423
+
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/?category=form%20interaction
+
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/?timestamp_before=2021-05-20
+
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/?timestamp_after=2021-06-01
 
 - Run tests (from top of repo): ::
 
