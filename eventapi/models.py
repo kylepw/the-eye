@@ -8,7 +8,7 @@ class Event(models.Model):
     session_id = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    data = models.JSONField()
+    data = models.JSONField(default=dict)
     timestamp = models.DateTimeField(default=timezone.now)
 
     class Meta:
