@@ -17,7 +17,7 @@ class Event(models.Model):
 
     @property
     def type(self):
-        return '_'.join([self.category, self.name])
+        return '_'.join(self.category.split() + self.name.split())
 
     def __str__(self):
         return f'{self.session_id} ({self.type})'
