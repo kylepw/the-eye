@@ -25,9 +25,20 @@ Usage
 
 - Send event: ::
 
-    curl -X POST http://127.0.0.1:8000/events/   \
-         -H 'Content-Type: application/json' \
-         -d '{"session_id": "e2085be5-9137-4e4e-80b5-f1ffddc25423", "category": "page interaction", "name": "pageview", "data": {"host": "www.consumeraffairs.com", "path": "/"}, "timestamp": "2021-01-01 09:15:27.243860"}'
+curl -X POST http://127.0.0.1:8000/events/   \
+     -H 'Content-Type: application/json' \
+     -d @- << EOF
+{
+    "session_id": "e2085be5-9137-4e4e-80b5-f1ffddc25423",
+    "category": "click",
+    "name": "pageview",
+    "data": {
+        "host": "www.consumeraffairs.com",
+        "path": "/"
+    },
+    "timestamp": "2021-01-01 09:15:29.243860"
+}
+EOF
 
 - Run tests (from top of repo): ::
 
@@ -39,4 +50,17 @@ Usage
 
 Conclusions
 -----------
+I decided to use one **model** as opposed to multiple (ex. Event, Session, etc.) because relationships and joins seemed overkill
+given the standardized structure of the event payloads and query requirements.
+
+I set the Django REST framework **threshold** to 100 requests/sec, which is per client, not total, so that doesn't exactly fulfill
+the first *~100 events/second* constraint.
+
+The **specific time range query** was interesting. To do this, I employed *django-filter* to allow range queries on the 
+*timestamp* field. I chose an ISO8601 format over a more general date/time format given the examples and the fact that requests
+could be coming from places in different timezones.
+
+I assumed that although events could share a timestamp or session_id value, there shouldn't be multiple events with ALL the same
+values, so I tackled this with a *unique_together* property set to all fields in the model.
+
 *Explain what conclusions you've made from the entities, constraints, requirements and use cases of this test.*
