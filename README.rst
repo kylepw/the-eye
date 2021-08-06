@@ -3,15 +3,24 @@ The Eye
 =======
 Event data aggregator in Django REST framework.
 
+Requirements
+------------
+- Python
+- Docker
+
 Setup
 -----
-- Clone, configure virtual environment, migrate, run: ::
+- Clone, configure virtual environment, run: ::
 
     git clone git@github.com:kylepw/the-eye.git && \
     cd the-eye && python3 -m venv venv && source venv/bin/activate && pip3 install -U pip -r requirements.txt && \
     echo SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')" > .env && \
-    python3 manage.py migrate && python3 manage.py loaddata db.json && \
-    python3 manage.py runserver
+    docker-compose up --build
+
+- Stop app and start again: ::
+
+    ^C
+    docker-compose up
 
 Usage
 -----
@@ -40,7 +49,7 @@ Usage
     }
     EOF
 
-- Query a session, category, or time range: ::
+- Query a session, category, or timestamp range: ::
 
     curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/?session_id=e2085be5-9137-4e4e-80b5-f1ffddc25423
 
@@ -50,21 +59,17 @@ Usage
 
     curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/events/?timestamp_after=2021-06-01
 
-- Run tests (from top of repo): ::
+- Run tests (from top of repo after running *docker-compose up --build*): ::
 
-    python3 manage.py test
-
-- Test coverage (from top of repo): ::
-  
-    coverage run manage.py test && coverage report
+    docker-compose exec web /code/manage.py test
 
 Conclusions
 -----------
 I decided to use one **model** as opposed to multiple (ex. Event, Session, etc.) because relationships and joins seemed overkill
 given the standardized structure of the event payloads and query requirements.
 
-I set the Django REST framework **threshold** to 100 requests/sec, which is per client, not total, so that doesn't exactly fulfill
-the first *~100 events/second* constraint.
+I utilized Celery/Redis to **run a pseudo task asynchronously** on event retrieve and create requests to the API to tackle the
+*~100 events/second* and *make sure to not leave them hanging* constraints.
 
 The **specific time range query** was interesting. To do this, I employed *django-filter* to allow range queries on the 
 *timestamp* field. I chose an ISO8601 format over a more general date/time format given the examples and the fact that requests
@@ -72,5 +77,3 @@ could be coming from places in different timezones.
 
 I assumed that although events could share a timestamp or session_id value, there shouldn't be multiple events with ALL the same
 values, so I tackled this with a *unique_together* property set to all fields in the model.
-
-*Explain what conclusions you've made from the entities, constraints, requirements and use cases of this test.*
