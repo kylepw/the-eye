@@ -1,7 +1,7 @@
 =======
 The Eye
 =======
-Event data aggregator in Django REST framework.
+Event data aggregator using Django REST framework/Celery/Redis.
 
 Requirements
 ------------
