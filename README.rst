@@ -12,9 +12,7 @@ Setup
 -----
 - Clone, configure virtual environment, run: ::
 
-    git clone git@github.com:kylepw/the-eye.git && \
-    cd the-eye && python3 -m venv venv && source venv/bin/activate && pip3 install -U pip -r requirements.txt && \
-    echo SECRET_KEY="$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')" > .env && \
+    git clone git@github.com:kylepw/the-eye.git && cd the-eye && \
     docker-compose up --build
 
 - Stop app and start again: ::
