@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+    redis:
+        image: "redis:6.2.5"
+        restart: always
+    web:
+        build: .
+        command: bash -c "
+            /code/manage.py migrate --noinput
+            && /code/manage.py loaddata db.json
+            && /code/manage.py runserver 0.0.0.0:8000"
+        volumes:
+            - .:/code
+        ports:
+            - "8000:8000"
+        depends_on:
+            - redis
+    celery:
+        build: .
+        command: celery -A theeye worker -l info
+        volumes:
+            - .:/code
+        depends_on:
+            - redis
