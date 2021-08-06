@@ -29,23 +29,23 @@ class EventViewSetTestCase(APITestCase):
         self.assertEqual(len(response_json['results']), 5)
 
     def test_list_pagination_works(self):
-            PAGE_SIZE = int(settings.REST_FRAMEWORK['PAGE_SIZE'])
-            EventFactory.create_batch(PAGE_SIZE * 2)
+        PAGE_SIZE = int(settings.REST_FRAMEWORK['PAGE_SIZE'])
+        EventFactory.create_batch(PAGE_SIZE * 2)
 
-            url = reverse('event-list')
-            response = self.client.get(url)
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-            response_json = response.json()
-            # Should be as many results as PAGE_SIZE, but more in total count
-            self.assertEqual(len(response_json['results']), PAGE_SIZE)
-            self.assertGreater(response_json['count'], PAGE_SIZE)
-    
+        url = reverse('event-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_json = response.json()
+        # Should be as many results as PAGE_SIZE, but more in total count
+        self.assertEqual(len(response_json['results']), PAGE_SIZE)
+        self.assertGreater(response_json['count'], PAGE_SIZE)
+
     def test_list_new_event_in_results(self):
         new_event = Event(
             session_id='g5085gc5-8888-4e4e-79b5-f1ffddc12345',
             category='form interaction',
             name='submit',
-            data={'host': 'www.consumerreports.com', 'path': '/'}
+            data={'host': 'www.consumerreports.com', 'path': '/'},
         )
         url = reverse('event-list')
 

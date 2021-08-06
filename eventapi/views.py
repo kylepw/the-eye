@@ -6,6 +6,7 @@ from .models import Event, EventFilter
 from .serializers import EventSerializer
 from .tasks import process_event
 
+
 class EventViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -20,10 +21,12 @@ class EventViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
         # Process event in background.
         process_event.delay(serializer.data)
-    
+
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
     def get_success_headers(self, data):
         try:
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}

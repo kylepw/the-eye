@@ -13,7 +13,12 @@ class EventTestCase(TestCase):
         )
 
     def test_type_property(self):
-        self.assertEqual(self.event.type, '_'.join(self.event.category.split() + self.event.name.split()))
-    
+        self.assertEqual(
+            self.event.type,
+            '_'.join(self.event.category.split() + self.event.name.split()),
+        )
+
     def test_str(self):
-        self.assertEqual(str(self.event), f'{self.event.session_id} ({self.event.type})')
+        self.assertEqual(
+            str(self.event), f'{self.event.session_id} ({self.event.type})'
+        )
