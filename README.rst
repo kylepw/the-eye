@@ -73,5 +73,5 @@ The **specific time range query** was interesting. To do this, I employed *djang
 *timestamp* field. I chose an ISO8601 format over a more general date/time format given the examples and the fact that requests
 could be coming from places in different timezones.
 
-I assumed that although events could share a timestamp or session_id value, there shouldn't be multiple events with ALL the same
-values, so I tackled this with a *unique_together* property set to all fields in the model.
+I assumed that although events could share a timestamp or session_id value, there shouldn't be **multiple events with ALL the same
+values**, so I tackled this with a *unique_together* property set to all fields in the model.
