@@ -12,8 +12,8 @@ Setup
 -----
 - Clone, configure virtual environment, run: ::
 
-    git clone git@github.com:kylepw/the-eye.git && cd the-eye && \
-    docker-compose up --build
+    git clone git@github.com:kylepw/the-eye.git && \
+    cd the-eye && docker-compose up --build
 
 - Stop app and start again: ::
 
