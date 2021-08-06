@@ -67,7 +67,7 @@ I decided to use one **model** as opposed to multiple (ex. Event, Session, etc.)
 given the standardized structure of the event payloads and query requirements.
 
 I utilized Celery/Redis to **run a pseudo task asynchronously** on event retrieve and create requests to the API to tackle the
-*~100 events/second* and *make sure to not leave them hanging* constraints.
+*"~100 events/second"* and *"make sure to not leave them hanging"* constraints.
 
 The **specific time range query** was interesting. To do this, I employed *django-filter* to allow range queries on the 
 *timestamp* field. I chose an ISO8601 format over a more general date/time format given the examples and the fact that requests
