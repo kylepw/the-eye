@@ -10,7 +10,7 @@ Requirements
 
 Setup
 -----
-- Clone, configure virtual environment, run: ::
+- Clone and launch: ::
 
     git clone git@github.com:kylepw/the-eye.git && \
     cd the-eye && docker-compose up --build
